@@ -4,13 +4,17 @@ import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 
-import java.io.IOException;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
+import org.sonorous.server.DBRead;
 import org.sonorous.shared.*;
 
 public class NetClient {
 	
-	private Client client;
+	protected Client client;
 	public State status;
 	
 	public NetClient() {
@@ -36,11 +40,39 @@ public class NetClient {
 	public void listenNameServer() {
 		client.addListener(new Listener() {
 		       public void received (Connection connection, Object object) {
-		          if (object instanceof RoomData) {
-		             
+		          if(object instanceof GenericSuccess) {
+		        	  GenericSuccess gsobj = (GenericSuccess)object;
+		        	  if(gsobj.getCode() == 0) {
+		        		  
+		        	  }
+		        	  
+		        	  if(gsobj.getCode() == 1) {
+		        		  NetHookStatic.setOperationComplete(true);
+		        	  }
 		          }
 		       }
 		});
+	}
+	
+	public void hookHostAppend(String nameServer, NSAppend nsobj) throws Exception {
+		final ExecutorService service;
+        final Future<Boolean>  task;
+        service = Executors.newFixedThreadPool(1);        
+        task = service.submit(new NetHook(nameServer, this, nsobj));
+        Boolean result = null;
+        try {
+			result = task.get();
+		} catch (InterruptedException | ExecutionException e) {
+			e.printStackTrace();
+		}
+        
+        if(result = Boolean.TRUE) {
+        	Log.write("Name server returned GS_1 (append to database successful)");
+        } else if(result = Boolean.FALSE) {
+        	Log.write("Name server did not respond within 10 seconds");
+        } else {
+        	Log.write("This message should never be seen, hook return null or invalid boolean. Serious error occured");
+        }
 	}
 
 }

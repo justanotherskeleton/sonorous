@@ -14,6 +14,7 @@ public class DBRead implements Callable<String> {
 		this.db_id = db_id;
 		this.db_pass = db_pass;
 		this.db_read = db_read;
+		this.call();
 	}
 	
 	@Override
