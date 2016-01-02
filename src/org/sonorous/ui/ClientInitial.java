@@ -34,8 +34,7 @@ public class ClientInitial extends JPanel {
 		tf_ns.setBounds(21, 75, 214, 20);
 		add(tf_ns);
 		tf_ns.setColumns(10);
-		
-		JLabel label_ns = new JLabel("Name Server");
+				JLabel label_ns = new JLabel("Name Server");
 		label_ns.setBounds(21, 61, 82, 14);
 		add(label_ns);
 		

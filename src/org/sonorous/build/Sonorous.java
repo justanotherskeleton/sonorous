@@ -6,6 +6,8 @@ public class Sonorous {
 		if(!(args.length == 1)) {
 			System.out.println("Invalid amount of arguments");
 		}
+		
+		Data.OS = System.getProperty("os.name");
 	}
 
 }
