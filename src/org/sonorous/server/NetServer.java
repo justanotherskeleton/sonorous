@@ -1,7 +1,10 @@
 package org.sonorous.server;
 
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
@@ -30,11 +33,11 @@ import com.esotericsoftware.kryonet.Server;
 public class NetServer {
 	
 	private Server server;
-	private Path db_file;
+	private File db_file;
 	private Charset db_charset = Charset.forName("UTF-8");
 	private String db_head = new String(":::[SONOROUS DATABASE]");
-	private BufferedWriter db_bwriter;
-	private Scanner db_read;
+	private BufferedWriter db_writer;
+	private BufferedReader db_reader;
 	public State status;
 	
 	public NetServer() throws Exception {
@@ -42,13 +45,15 @@ public class NetServer {
 		server = new Server();
 		server.start();
 	    server.bind(Network.NAMESERVER_TCP);
-	    db_file = Paths.get("sonorous.db");
+	    db_file = new File("sonorous.db");
 		Log.write("Name Server initialized");
 		status = State.ACTIVE;
 		manageDB();
 		listen();
 	}
 	
+	/*
+	 * OLD DATABASE (NOT RECOMMENDED)
 	//Requires Java 7+ (note on website)
 	private void manageDB() throws Exception {
 		//Temporary file object of db_file
@@ -69,6 +74,20 @@ public class NetServer {
 		db_read = new Scanner(database);
 		
 		Log.write("Database check successfully completed, starting listen server");
+	}
+	*/
+	
+	private void manageDB() throws Exception {
+		if(!db_file.exists()) {
+			db_file.createNewFile();
+			Log.write("No existing database found, created 'sonorous.db'");
+		}
+		
+		db_writer = new BufferedWriter(new FileWriter(db_file));
+		db_reader = new BufferedReader(new FileReader(db_file));
+		Log.write("I/O operations initialized");
+		
+		
 	}
 	
 	private void listen() {

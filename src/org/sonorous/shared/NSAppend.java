@@ -3,11 +3,13 @@ package org.sonorous.shared;
 public class NSAppend {
 	
 	public String roomName, roomPass, roomAuthBlock;
+	public NSSettings settings;
 	
-	public NSAppend(String roomName, String roomPass, String roomAuthBlock) {
+	public NSAppend(String roomName, String roomPass, String roomAuthBlock, NSSettings ns) {
 		this.roomName = roomName;
 		this.roomPass = roomPass;
 		this.roomAuthBlock = roomAuthBlock;
+		this.settings = ns;
 	}
 
 	public String getRoomName() {
@@ -32,6 +34,14 @@ public class NSAppend {
 
 	public void setRoomAuthBlock(String roomAuthBlock) {
 		this.roomAuthBlock = roomAuthBlock;
+	}
+
+	public NSSettings getSettings() {
+		return settings;
+	}
+
+	public void setSettings(NSSettings settings) {
+		this.settings = settings;
 	}
 
 }
