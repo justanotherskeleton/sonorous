@@ -5,9 +5,13 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import org.apache.commons.codec.binary.Base64;
 import org.sonorous.shared.Log;
+import org.sonorous.shared.Message;
 import org.sonorous.shared.NSAppend;
 import org.sonorous.shared.Network;
 import org.sonorous.shared.State;
+
+import com.esotericsoftware.kryonet.Connection;
+import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.kryonet.Server;
 
 public class NetHost {
@@ -24,6 +28,17 @@ public class NetHost {
 		server.start();
 	    server.bind(Network.NAMESERVER_TCP);
 	    Log.write("Host server started");
+	}
+	
+	public void run() {
+		server.addListener(new Listener() {
+		       public void received (Connection connection, Object object) {
+		          if (object instanceof Message) {
+		             server.sendToAllTCP(object);
+		          }
+		          
+		       }
+		});
 	}
 	
 	public void createRoom(String roomName, String roomPassword, String nameServer) throws Exception {

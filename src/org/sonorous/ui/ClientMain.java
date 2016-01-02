@@ -93,6 +93,10 @@ public class ClientMain extends JPanel {
 		JButton btn_disconnect = new JButton("Disconnect");
 		btn_disconnect.setBounds(240, 138, 89, 23);
 		add(btn_disconnect);
+		
+		JLabel lblPeer = new JLabel("PEER");
+		lblPeer.setBounds(10, 127, 46, 14);
+		add(lblPeer);
 
 	}
 }
