@@ -2,6 +2,7 @@ package sonder.sonorous.client;
 
 import java.io.IOException;
 
+import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
@@ -15,12 +16,14 @@ public class NetClient {
 	
 	//h_* indicates hashed varible
 	private Client client;
+	private Kryo kryo;
 	private String h_password;
 	
 	public NetClient() {
 		Log.write("Starting Sonorous client | version: " + Meta.VERSION);
 		client = new Client();
 		client.start();
+		kryo = client.getKryo();
 		Log.write("Client startup complete!");
 	}
 	
@@ -36,6 +39,7 @@ public class NetClient {
 		} else {
 			Log.write("Connection failed!");
 		}
+		
 	}
 	
 	public void listen() {
@@ -63,6 +67,15 @@ public class NetClient {
 		          }
 		       }
 		});
+	}
+	
+	public void rawSend(Object raw) {
+		client.sendTCP(raw);
+	}
+	
+	public void register(Class c) {
+		kryo.register(c);
+		Log.write("Registered object/" + c.getName());
 	}
 
 }

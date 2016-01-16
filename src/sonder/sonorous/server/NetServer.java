@@ -2,6 +2,7 @@ package sonder.sonorous.server;
 
 import java.io.IOException;
 
+import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.kryonet.Server;
@@ -13,11 +14,13 @@ import sonder.sonorous.resource.Log;
 public class NetServer {
 	
 	private Server server;
+	private Kryo kryo;
 	
 	public NetServer() throws Exception {
 		Log.write("Starting server @ " + Network.PUBLIC_IP);
 		server = new Server();
 	    server.start();
+	    kryo = server.getKryo();
 	    server.bind(Network.TCP_PORT);
 	    Log.write("Server started!");
 	}
@@ -34,6 +37,11 @@ public class NetServer {
 		          }
 		       }
 		});
+	}
+	
+	public void register(Class c) {
+		kryo.register(c);
+		Log.write("Registered object/" + c.getName());
 	}
 
 }
