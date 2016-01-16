@@ -12,6 +12,12 @@ public class Server {
 	
 	public void start(boolean registerTest) throws Exception {
 		NetServer server = new NetServer();
+		
+		if(registerTest) {
+			server.register(byte.class);
+			server.register(Reflect.class);
+		}
+		
 		server.listen();
 	}
 
