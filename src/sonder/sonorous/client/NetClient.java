@@ -7,6 +7,7 @@ import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 
 import sonder.sonorous.build.Meta;
+import sonder.sonorous.build.Reflect;
 import sonder.sonorous.network.Network;
 import sonder.sonorous.resource.Log;
 
@@ -40,7 +41,11 @@ public class NetClient {
 	public void listen() {
 		client.addListener(new Listener() {
 		       public void received (Connection connection, Object object) {
-		          if (object instanceof Byte) {
+		    	  if(object instanceof Reflect) {
+		    		  Log.write("Reflect: " + ((Reflect)object).getReflection());
+		    	  }
+		    	  
+		          if(object instanceof Byte) {
 		             //Check docs for byte codes
 		        	 byte code = (Byte)object;
 		        	 switch(code) {
