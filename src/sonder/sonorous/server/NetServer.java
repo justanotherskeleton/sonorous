@@ -56,6 +56,7 @@ public class NetServer {
 		        	  } else {
 		        		  Log.write("Denied user ip:" + connection.getRemoteAddressTCP().getAddress().toString());
 		        		  server.sendToTCP(connection.getID(), 0x12);
+		        		  server.sendToTCP(connection.getID(), 0x01);
 		        		  connection.close();
 		        	  }
 		          }
