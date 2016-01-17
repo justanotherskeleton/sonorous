@@ -18,7 +18,7 @@ public class NetServer {
 	
 	private Server server;
 	private Kryo kryo;
-	
+	private Configuration config;
 	private String h_password;
 	private LinkedList<User> users;
 	
@@ -26,6 +26,8 @@ public class NetServer {
 		Log.write("Starting server @ " + Network.PUBLIC_IP);
 		server = new Server();
 	    server.start();
+	    config = new Configuration();
+	    config.init();
 	    kryo = server.getKryo();
 	    server.bind(Network.TCP_PORT);
 	    Log.write("Server started!");
