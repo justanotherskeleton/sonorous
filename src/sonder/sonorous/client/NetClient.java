@@ -10,6 +10,7 @@ import com.esotericsoftware.kryonet.Listener;
 import sonder.sonorous.build.Meta;
 import sonder.sonorous.build.Reflect;
 import sonder.sonorous.network.Network;
+import sonder.sonorous.resource.Crypto;
 import sonder.sonorous.resource.Log;
 
 public class NetClient {
@@ -59,7 +60,7 @@ public class NetClient {
 		        	 	case 0x10: //server requesting authentication
 		        	 	case 0x11: 
 		        	 		//authentication success
-		        	 		Log.write("Server accepted authentication!");
+		        	 		Log.write("Server accepted authentication, listening in!");
 		        	 		break;
 		        	 	case 0x12: //authentication denied
 		        	 	default: 
@@ -71,6 +72,10 @@ public class NetClient {
 	
 	public void rawSend(Object raw) {
 		client.sendTCP(raw);
+	}
+	
+	public void sendMessage(String message) {
+		client.sendTCP(Crypto.encrypt(message));
 	}
 	
 	public void register(Class c) {
